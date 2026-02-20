@@ -1167,7 +1167,24 @@ Program | Day | Exercise | Sets | Reps | Rest | Note
 `Импортирани/обновени програми: ${imported.length}
 Общо програми: ${state.programs.length}
 
-Съвет: Ако ползваш български колони, работи автоматично.`);
+Програмата се приложи автоматично към избрания клиент.`);
+
+    // AUTO APPLY to active client (overwrite)
+    const activeClient = getActiveClient();
+    if (activeClient && imported.length === 1) {
+      activeClient.plan = {};
+      const p = imported[0];
+      Object.keys(p.days || {}).forEach(day => {
+        activeClient.plan[day] = (p.days[day] || []).map(ex => ({
+          ...ex,
+          id: uid(),
+          completed: false,
+          completedAt: null
+        }));
+      });
+      saveState(state);
+      renderAll();
+    }
   }
 
   async function importNutrition() {
@@ -1236,7 +1253,24 @@ Program | Day | MealTitle | Desc | Kcal | P | C | F | Time | Tag | AdminNote`);
 
     openModal("Импорт готов (хранене)",
 `Импортирани/обновени режими: ${imported.length}
-Общо режими: ${state.nutritionPrograms.length}`);
+Общо режими: ${state.nutritionPrograms.length}
+
+Режимът се приложи автоматично към избрания клиент.`);
+
+    // AUTO APPLY to active client (overwrite)
+    const activeClient = getActiveClient();
+    if (activeClient && imported.length === 1) {
+      activeClient.nutrition = {};
+      const p = imported[0];
+      Object.keys(p.days || {}).forEach(day => {
+        activeClient.nutrition[day] = (p.days[day] || []).map(m => ({
+          ...m,
+          id: uid()
+        }));
+      });
+      saveState(state);
+      renderAll();
+    }
   }
 
   function applyNutritionToClient(overwrite = false) {
