@@ -543,14 +543,19 @@
       el.className = "plan-item";
       el.innerHTML = `
         <div class="left">
-          <div class="title">🍽 ${escapeHtml(m.title)}</div>
-          <div class="sub">${escapeHtml(mealSummary(m) || "")}</div>
-          ${m.desc ? `<div class="note">${linkify(m.desc)}</div>` : ""}
-          ${m.adminNote ? `<div class="note" style="color: rgba(110,231,255,.95);">Admin: ${linkify(m.adminNote)}</div>` : ""}
+          <div class="title">${escapeHtml(m.title)}${m.time ? `<span class="muted" style="margin-left:10px;font-weight:700;">${escapeHtml(m.time)}</span>` : ""}</div>
+          <div class="meta">
+            ${m.kcal !== "" && m.kcal != null ? `<span class="pill">🔥 ${escapeHtml(String(m.kcal))} kcal</span>` : ""}
+            ${m.p !== "" && m.p != null ? `<span class="pill">P ${escapeHtml(String(m.p))}g</span>` : ""}
+            ${m.c !== "" && m.c != null ? `<span class="pill">C ${escapeHtml(String(m.c))}g</span>` : ""}
+            ${m.f !== "" && m.f != null ? `<span class="pill">F ${escapeHtml(String(m.f))}g</span>` : ""}
+            ${m.tag ? `<span class="pill">#${escapeHtml(String(m.tag))}</span>` : ""}
+          </div>
+          ${m.desc ? `<div class="note">${linkify(escapeHtml(m.desc))}</div>` : ""}
         </div>
-        <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;">
-          <button class="icon-btn edit-btn" title="Редакция">✏</button>
-          <button class="icon-btn del-btn" title="Изтрий">🗑</button>
+        <div class="right">
+          <button class="btn icon edit-btn" title="Редакция">✏</button>
+          <button class="btn icon del-btn" title="Изтрий">🗑</button>
         </div>
       `;
       el.querySelector(".del-btn").addEventListener("click", () => removeMeal(day, m.id));
