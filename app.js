@@ -1182,6 +1182,11 @@ Program | Day | Exercise | Sets | Reps | Rest | Note
           completedAt: null
         }));
       });
+      const first = firstDayWithItems(activeClient.plan);
+      if (first) {
+        try { daySelect.value = first; } catch {}
+        try { nDaySelect.value = first; } catch {}
+      }
       saveState(state);
       renderAll();
     }
@@ -1268,6 +1273,10 @@ Program | Day | MealTitle | Desc | Kcal | P | C | F | Time | Tag | AdminNote`);
           id: uid()
         }));
       });
+      const firstN = firstDayWithItems(activeClient.nutrition);
+      if (firstN) {
+        try { nDaySelect.value = firstN; } catch {}
+      }
       saveState(state);
       renderAll();
     }
